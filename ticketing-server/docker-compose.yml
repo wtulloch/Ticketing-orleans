@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  ticketingapi:
+    image: ticketingapi
+    build:
+      context: .
+      dockerfile: TicketingApi/Dockerfile
+    depends_on:
+      - ticketingsilo
+    ports: 
+      - "5001:80"
+
+  ticketingsilo:
+    image: silo
+    build:
+      context: .
+      dockerfile: Silo/Dockerfile
+    ports:
+      - "9000:8080"
+

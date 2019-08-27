@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-language" content="en" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web component starter project</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 10px;
+        font-family: sans-serif;
+        line-height: 1.5;
+    }
+
+    .component-grid {
+        display: grid;
+        gap: 30px;
+        grid-template-columns: repeat(3, 1fr);
+    }
+</style>
+<script>
+    if(!window.customElements){
+        document.write('<!--');
+    }
+</script>
+<script src="./vendor/custom-elements-es5-adapter.js"></script>
+<!-- !DO NOT REMOVE THIS COMMENT, WE NEED ITS CLOSING MARKER -->
+</head>
+<body>
+<main>
+<home-view></home-view>   
+</main>
+<script src='./vendor/webcomponents-loader.js'></script>
+</body>
+</html>
