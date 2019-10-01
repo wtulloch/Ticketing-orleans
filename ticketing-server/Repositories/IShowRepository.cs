@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Repositories.Models;
 
 namespace Repositories
 {
     public interface IShowRepository
     {
-        List<string> GetShows();
+        List<ShowInfo> GetShows();
     }
 }
 
