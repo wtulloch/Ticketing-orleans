@@ -149,6 +149,13 @@ export class HomeView extends LitElement {
 
     setCurrentShow(show: IShowInformation) {
         this.currentShowInfo = show;
+        this.selectedPerformance = {
+            showId: '',
+            date: '',
+            showName: '',
+            seatAllocation: 0,
+            tickets: []
+        };
     }
 
     async getShowTickets(date: string) {
