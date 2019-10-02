@@ -12,4 +12,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ticketing.Models\Ticketing.Models.csproj" />
+  </ItemGroup>
+
 </Project>

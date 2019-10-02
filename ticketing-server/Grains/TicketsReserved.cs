@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Grains.Interfaces;
 using Orleans;
 using Orleans.Providers;
+using Ticketing.Models;
 
 namespace Grains
 {
@@ -11,24 +12,23 @@ namespace Grains
     public class TicketsReserved : Grain<TicketsReservedState>, ITicketsReserved
     {
 
-        public Task SetTicket(string ticketId, bool state)
+      
+
+        public async Task SetTicket(TicketBooking ticketBooking)
         {
-            if (State.ReservedTickets.ContainsKey(ticketId))
+            if (State.ReservedTickets.ContainsKey(ticketBooking.TicketId))
             {
-                State.ReservedTickets[ticketId] = state;
-            }
-            else
-            {
-                State.ReservedTickets.Add(ticketId, state);
+                State.ReservedTickets[ticketBooking.TicketId] = true;
             }
 
+            await WriteStateAsync();
 
-            return base.WriteStateAsync();
+            return;
         }
 
-        public Task<List<(string, bool)>> GetAllTickets()
+        public Task<List<TicketStatus>> GetAllTickets()
         {
-            var allTickets = State.ReservedTickets.Select(kv => (kv.Key, kv.Value)).ToList();
+            var allTickets = State.ReservedTickets.Select(kv => new TicketStatus{TicketId = kv.Key,Sold = kv.Value}).ToList();
 
             return Task.FromResult(allTickets);
         }
@@ -49,6 +49,18 @@ namespace Grains
         public Task<int> GetTicketCount()
         {
             return Task.FromResult(State.ReservedTickets.Count);
+        }
+
+        public Task InitialiseTickets(int seatsToAllocate)
+        {
+            var primaryKey = this.GetPrimaryKeyString();
+           for(var i = 1; i <= seatsToAllocate; i++)
+           {
+               var seatNo = i.ToString("0000");
+                State.ReservedTickets.Add($"{primaryKey}-{seatNo}", false);
+           }
+
+           return base.WriteStateAsync();
         }
     }
 }

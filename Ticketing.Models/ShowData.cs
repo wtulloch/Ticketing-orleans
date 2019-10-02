@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Repositories.Models
+namespace Ticketing.Models
 {
     public class ShowData
     {
@@ -12,7 +10,8 @@ namespace Repositories.Models
         }
         public string ShowId { get; set; }
         public string ShowName { get; set; }
-        public  DateTime Date { get; set; }
+        public  string Date { get; set; }
         public int SeatAllocation { get; set; }
+        public List<TicketStatus> Tickets { get; set; }
     }
 }

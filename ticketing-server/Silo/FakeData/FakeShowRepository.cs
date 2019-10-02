@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Grains;
 using Newtonsoft.Json;
 using Repositories;
-using Repositories.Models;
 using Ticketing.Models;
 
 namespace Silo.FakeData
@@ -45,12 +44,12 @@ namespace Silo.FakeData
             };
         }
 
-        private List<DateTime> CreateDates(DateTime startDate, int numberOfShows)
+        private List<string> CreateDates(DateTime startDate, int numberOfShows)
         {
-            var dates = new List<DateTime>();
+            var dates = new List<string>();
             for (int i = 0; i < numberOfShows; i++)
             {
-                dates.Add(startDate.AddDays(i));
+                dates.Add(startDate.AddDays(i).ToShortDateString());
             }
 
             return dates;

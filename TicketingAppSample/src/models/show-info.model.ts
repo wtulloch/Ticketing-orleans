@@ -1,11 +1,20 @@
-export interface IShowInfo {
+export interface IShowData {
     showId: string;
-    tickets: ITicketInfo[] | null;
-    unsoldTickets: string[] | null;
+    date: string;
+    showName: string;
+    tickets: ITicketStatus[] | null;
+    seatAllocation: number
 
 };
 
-export interface ITicketInfo {
+export interface IShowInformation {
+    baseShowId: string;
+    name: string;
+    dates: string[];
+    seatingAllocation: number;
+} ;
+
+export interface ITicketStatus {
     ticketId: string;
     sold: boolean;
-}
+};

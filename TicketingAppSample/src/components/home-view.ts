@@ -1,6 +1,6 @@
 import { customElement, LitElement, CSSResult, css, TemplateResult, html, property } from "lit-element";
 import {TicketingServices} from '../services/ticketing-service'
-import { IShowInfo } from '../models/show-info.model';
+import { IShowData,IShowInformation } from '../models/show-info.model';
 
 @customElement('home-view')
 export class HomeView extends LitElement {
@@ -8,22 +8,29 @@ export class HomeView extends LitElement {
     private service: TicketingServices;
 
     @property({type:Array})
-     shows: string[] | undefined = undefined;
+     shows: IShowInformation[] | undefined = undefined;
     
     @property({type: Object})
-    showInfo: IShowInfo = {
+    selectedPerformance: IShowData = {
         showId: '',
-        tickets: [],
-        unsoldTickets:[]
+        date: '',
+        showName: '',
+        seatAllocation: 0,
+        tickets: []
     };
 
+
+    @property({type: Object})
+    currentShowInfo: IShowInformation | undefined;
+
+     
     static get styles(): CSSResult {
         return css `
             :host {
                display: flex;
                 
             }
-
+            
             .show-container {
                 display: flex;
                 flex-direction: column;
@@ -42,6 +49,10 @@ export class HomeView extends LitElement {
                 opacity: 0.8;
 
             }
+            .show-card > p {
+                text-align: center;
+                margin-block-start: 0.5em;
+            }
             .show-card:hover {
                 opacity: 1;
                 cursor: pointer;
@@ -55,26 +66,17 @@ export class HomeView extends LitElement {
                flex-flow: row wrap;
             }
 
-            .ticket-card {
-                width: 100px;
-                height: 100px;
+            .show-dates-container {
                 display: flex;
-                justify-content: center;
-                align-content: center;
-                border: 1px solid black;
-                margin: 5px;
-                background-color: #3cd63c;
-                opacity: 0.8;
+                flex-direction: row;
             }
-
-            .ticket-card:hover {
-                cursor: pointer;
-                opacity: 1;
+            .date-selector {
+                width: 150px;
+                height: 30px;
+                border: 1px black solid;
+                margin: 10px;
             }
-
-            .ticket-sold {
-                background-color: red;
-            }
+           
 
 
 
@@ -86,20 +88,31 @@ export class HomeView extends LitElement {
             <div class="show-container">
                
                 ${this.shows ? 
-                    this.shows.map(s => html `<div class="show-card" @click=${() => this.getShowTickets(s)} ><p>${s}</p></div>`)
+                    this.shows.map(s => html `<div class="show-card" @click=${() => this.setCurrentShow(s)} ><p>${s.name}</p></div>`)
                     : html`<div class="show-card"> No shows yet</div>`    
             }
                
             </div>
+            
             <div class="current-show-container">
-        <h2>${this.showInfo.showId}</h2>
+        
+        <div class="show-dates-container">
+        ${this.currentShowInfo !== undefined ?
+        html` <h2>${this.currentShowInfo.name}</h2>` 
+        : html``}
+       
+
+        ${this.currentShowInfo !== undefined ? 
+            this.currentShowInfo.dates.map (t => html `<div class="date-selector" @click=${() => this.getShowTickets(t)}>${t}</div>`)
+        : html``}
+        </div>
         <div class="ticket-container">
-        ${this.showInfo.tickets != null ?
-            this.showInfo.tickets.map(t => {
-                if(t.sold) {
-                   return html `<div class="ticket-card ticket-sold" ><p>${t.ticketId}</p></div>`
+        ${this.selectedPerformance.tickets != null ?
+            this.selectedPerformance.tickets.map(t => {
+              if (t.sold){
+                return html `<theatre-seat .ticket=${t}></theatre-seat>`;
                 }
-               return html `<div class="ticket-card" @click=${() => this.purchaseTicket(this.showInfo.showId,t.ticketId)}><p>${t.ticketId}</p></div>`
+                return html `<theatre-seat .ticket=${t} @click=${() => this.onTicketClick(t.ticketId)}></theatre-seat>`
             })
             : html ``
         }
@@ -131,16 +144,17 @@ export class HomeView extends LitElement {
     }
 
     async getShows() {
-       
-
        this.shows = await this.service.getShows();
-       
     }
 
-    async getShowTickets(showId: string) {
+    setCurrentShow(show: IShowInformation) {
+        this.currentShowInfo = show;
+    }
+
+    async getShowTickets(date: string) {
         try {
-            this.showInfo = await this.service.getAllTickets(showId) as IShowInfo;
-            console.log(`${this.showInfo.showId} unsold tickets`, this.showInfo.unsoldTickets)
+            this.selectedPerformance = await this.service.getAllTickets(this.currentShowInfo!.baseShowId, date) as IShowData;
+            console.log(`${this.selectedPerformance.showId}`);
         } catch (error) {
           alert("error getting show tickets");
           console.log(error);  
@@ -151,13 +165,17 @@ export class HomeView extends LitElement {
         try {
             const result = await this.service.bookTicket(showId, ticketId);
             if (result) {
-                await this.getShowTickets(showId);
+                await this.getShowTickets(this.selectedPerformance!.date);
             }else {
                 alert('Could not purchase ticket');
             }
         } catch (error) {
             console.log(error);
         }
+    }
+
+    private async onTicketClick(ticketId: string) {
+        await this.purchaseTicket(this.selectedPerformance.showId, ticketId);
     }
 
 }
