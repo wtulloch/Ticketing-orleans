@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Repositories.Models
 {
-    public class ShowInfo
+    public class ShowData
     {
-        public ShowInfo()
+        public ShowData()
         {
             
         }
-        public string BaseShowId { get; set; }
+        public string ShowId { get; set; }
         public string ShowName { get; set; }
         public  DateTime Date { get; set; }
-        public int SeatsAvailable { get; set; }
+        public int SeatAllocation { get; set; }
     }
 }

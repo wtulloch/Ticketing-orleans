@@ -1,47 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using Grains;
 using Newtonsoft.Json;
 using Repositories;
 using Repositories.Models;
+using Ticketing.Models;
 
 namespace Silo.FakeData
 {
     public class FakeShowRepository : IShowRepository
     {
-        public List<ShowInfo> GetShows()
+        public List<ShowInformation> GetShows()
         {
-            return new List<ShowInfo>
+            return new List<ShowInformation>
             {
-                new ShowInfo
+                new ShowInformation
                 {
                     BaseShowId = "show1",
-                    ShowName = "Notes from the underground",
-                    Date =  DateTime.Today.AddDays(2),
-                    SeatsAvailable = 300
+                    Name = "Notes from the underground",
+                    Dates = CreateDates(DateTime.Today.AddDays(2), 3),
+                    SeatingAllocation = 300
                 },
-                new ShowInfo
+                new ShowInformation
                 {
                     BaseShowId = "show2",
-                    ShowName = "The Third Policeman",
-                    Date = DateTime.Today.AddDays(5),
-                    SeatsAvailable = 400
+                    Name = "The Third Policeman",
+                    Dates = CreateDates(DateTime.Today.AddDays(5), 2),
+                    SeatingAllocation = 400
                 },
-                new ShowInfo
+                new ShowInformation
                 {
                     BaseShowId = "show3",
-                    ShowName = "Fear and loathing in Las Vegas",
-                    Date = DateTime.Today.AddDays(3),
-                    SeatsAvailable = 250
+                    Name = "Fear and loathing in Las Vegas",
+                    Dates = CreateDates(DateTime.Today.AddDays(3), 5),
+                    SeatingAllocation = 250
                 },
-                new ShowInfo
+                new ShowInformation
                 {
                     BaseShowId = "show4",
-                    ShowName = "The Naked and the Dead",
-                    Date = DateTime.Today.AddDays(5),
-                    SeatsAvailable = 100
+                    Name = "The Naked and the Dead",
+                    Dates = CreateDates(DateTime.Today.AddDays(4), 8),
+                    SeatingAllocation = 100
                 }
             };
         }
+
+        private List<DateTime> CreateDates(DateTime startDate, int numberOfShows)
+        {
+            var dates = new List<DateTime>();
+            for (int i = 0; i < numberOfShows; i++)
+            {
+                dates.Add(startDate.AddDays(i));
+            }
+
+            return dates;
+        }
+      
     }
 
    

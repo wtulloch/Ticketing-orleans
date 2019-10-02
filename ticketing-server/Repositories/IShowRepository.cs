@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Repositories.Models;
+using Ticketing.Models;
 
 namespace Repositories
 {
     public interface IShowRepository
     {
-        List<ShowInfo> GetShows();
+        List<ShowInformation> GetShows();
     }
 }
 
