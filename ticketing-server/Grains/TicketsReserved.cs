@@ -61,16 +61,13 @@ namespace Grains
             return Task.FromResult(State.ReservedTickets.Count);
         }
 
-        public Task InitialiseTickets(int seatsToAllocate)
+        public async Task InitialiseTickets(int seatsToAllocate)
         {
             var primaryKey = this.GetPrimaryKeyString();
-           for(var i = 1; i <= seatsToAllocate; i++)
-           {
-               var seatNo = i.ToString("0000");
-                State.ReservedTickets.Add($"{primaryKey}-{seatNo}", false);
-           }
+            var grain = GrainFactory.GetGrain<ITicketGenerator>(0);
+            State.ReservedTickets = await grain.CreateTickets(primaryKey, seatsToAllocate);
 
-           return base.WriteStateAsync();
+          await base.WriteStateAsync();
         }
     }
 }

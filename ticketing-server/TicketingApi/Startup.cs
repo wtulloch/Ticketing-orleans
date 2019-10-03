@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Orleans;
 using Orleans.Configuration;
@@ -87,7 +86,7 @@ namespace TicketingApi
                     options.ClusterId = TicketingConstants.ClusterId;
                     options.ServiceId = TicketingConstants.ServiceId;
                 })
-                .ConfigureLogging(logger => logger.AddConsole())
+                .ConfigureLogging(logger => logger.SetMinimumLevel(LogLevel.Error).AddConsole())
                 .UseAzureStorageClustering(options => options.ConnectionString = connectionString)
                 .Build();
 
