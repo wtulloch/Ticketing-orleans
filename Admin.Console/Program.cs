@@ -56,7 +56,7 @@ namespace Admin.View
                         })
                         .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IMessageBatch).Assembly).WithReferences())
                         .UseAzureStorageClustering(options => options.ConnectionString = connectionString)
-                        .ConfigureLogging(logging => logging.AddConsole())
+                        .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning).AddConsole())
                         .AddSimpleMessageStreamProvider(TicketingConstants.LogStreamProvider)
                         .Build();
 

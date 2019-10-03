@@ -2,7 +2,7 @@ import {get, post} from './http-service';
 import {IShowData, ITicketStatus, IShowInformation} from '../models/show-info.model';
 
 export class TicketingServices {
-    private endPointBaseUrl = 'http://127.0.0.1:5001/api/ticketing/';
+    private endPointBaseUrl = 'http://127.0.0.1:5000/api/ticketing/';
 
     async getShows(): Promise<IShowInformation[] | undefined> {
         const requestUrl = `${this.endPointBaseUrl}showinfo`;
