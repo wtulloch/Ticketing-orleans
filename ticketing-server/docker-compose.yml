@@ -18,4 +18,5 @@ services:
       dockerfile: Silo/Dockerfile
     ports:
       - "9000:8080"
+      - "40000:30000"
 

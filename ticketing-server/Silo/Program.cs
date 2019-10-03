@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Silo
                 .AddAzureTableGrainStorage("store1", options => options.ConnectionString = connectionString)
                 .AddAzureTableGrainStorage("PubSubStore", options => options.ConnectionString = connectionString)
                 .AddSimpleMessageStreamProvider(TicketingConstants.LogStreamProvider)
-                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000, listenOnAnyHostAddress: true)
+                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000, listenOnAnyHostAddress: true,advertisedIP: IPAddress.Loopback)
                 .ConfigureApplicationParts(parts =>
                     parts.AddApplicationPart(typeof(TicketsReserved).Assembly).WithReferences())
                 .ConfigureServices(DependencyInjectionHelper.IocContainerRegistration)

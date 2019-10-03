@@ -78,7 +78,7 @@ namespace TicketingApi
         {
             var log = serviceProvider.GetService<ILogger<Startup>>();
 
-            var connectionString = Configuration["OrleansStorage"];
+            var connectionString = Configuration["LocalStorage"];
 
             var client = new ClientBuilder()
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart((typeof(ITicketsReserved).Assembly)))
