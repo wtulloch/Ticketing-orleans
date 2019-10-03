@@ -86,10 +86,6 @@ export class HomeView extends LitElement {
                 opacity: 1;
                 cursor: pointer;
             }
-           
-
-
-
         `;
     }
 

@@ -49,7 +49,7 @@ namespace Silo.FakeData
             var dates = new List<string>();
             for (int i = 0; i < numberOfShows; i++)
             {
-                dates.Add(startDate.AddDays(i).ToShortDateString());
+                dates.Add(startDate.AddDays(i).ToString("dd/MM/yyyy"));
             }
 
             return dates;
