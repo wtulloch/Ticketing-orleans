@@ -71,10 +71,20 @@ export class HomeView extends LitElement {
                 flex-direction: row;
             }
             .date-selector {
-                width: 150px;
+                width: 100px;
                 height: 30px;
-                border: 1px black solid;
+                border: 1px darkgray solid;
                 margin: 10px;
+                background-color: rgb(0, 153, 174);
+                opacity: 0.8;
+                text-align: center;
+                color: white;
+                padding-top: 4px;
+            }
+
+            .date-selector:hover {
+                opacity: 1;
+                cursor: pointer;
             }
            
 
@@ -95,11 +105,11 @@ export class HomeView extends LitElement {
             </div>
             
             <div class="current-show-container">
-        
-        <div class="show-dates-container">
-        ${this.currentShowInfo !== undefined ?
-        html` <h2>${this.currentShowInfo.name}</h2>` 
+            ${this.currentShowInfo !== undefined ?
+        html` <h2>${this.currentShowInfo.name} ${this.selectedPerformance.date}</h2>` 
         : html``}
+        <div class="show-dates-container">
+       
        
 
         ${this.currentShowInfo !== undefined ? 

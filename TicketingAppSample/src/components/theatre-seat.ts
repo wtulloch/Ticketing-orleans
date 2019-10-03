@@ -13,8 +13,8 @@ export class TheatreSeat extends LitElement {
     static get styles(): CSSResult { 
         return css `
         .ticket-card {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             display: flex;
             justify-content: center;
             align-content: center;
