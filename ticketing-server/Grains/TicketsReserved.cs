@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grains.Interfaces;
@@ -12,13 +13,22 @@ namespace Grains
     public class TicketsReserved : Grain<TicketsReservedState>, ITicketsReserved
     {
 
-      
+        private IMessageBatch _messageBatchGrain;
+
+        public override Task OnActivateAsync()
+        {
+            _messageBatchGrain = GrainFactory.GetGrain<IMessageBatch>(Guid.Empty);
+          
+            return base.OnActivateAsync();
+        }
 
         public async Task SetTicket(TicketBooking ticketBooking)
         {
             if (State.ReservedTickets.ContainsKey(ticketBooking.TicketId))
             {
                 State.ReservedTickets[ticketBooking.TicketId] = true;
+                var message = new ShowTicketLogMessage(ticketBooking.ShowId, "", ticketBooking.TicketId);
+                await _messageBatchGrain.TicketNotification(message);
             }
 
             await WriteStateAsync();

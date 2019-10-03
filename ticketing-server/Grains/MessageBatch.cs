@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grains.Interfaces;
 using Orleans;
+using Orleans.Providers;
 using Ticketing.Models;
 
 namespace Grains
@@ -10,8 +11,9 @@ namespace Grains
 
     public class MessageBatchState
     {
-        public List<ShowTicketLogMessage> Messages { get; set; }
+        public List<ShowTicketLogMessage> Messages { get; set; } = new List<ShowTicketLogMessage>();
     }
+    [StorageProvider(ProviderName = "store1")]
     public class MessageBatch: Grain<MessageBatchState>, IMessageBatch
     {
         private IDisposable _timer;
@@ -36,7 +38,7 @@ namespace Grains
 
         private Task ProcessMessages(object thing)
         {
-
+            //State.Messages.Clear();
             return Task.CompletedTask;
         }
     }

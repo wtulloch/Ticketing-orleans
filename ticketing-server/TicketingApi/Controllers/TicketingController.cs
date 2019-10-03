@@ -47,7 +47,15 @@ namespace TicketingApi.Controllers
                 return BadRequest();
             }
             var ticketsReserved = _client.GetGrain<ITicketsReserved>(showId);
-            await ticketsReserved.SetTicket(new TicketBooking(showId,ticket.TicketId));
+
+            try
+            {
+                await ticketsReserved.SetTicket(new TicketBooking(showId,ticket.TicketId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
 
             return Ok(ticket);
         }
