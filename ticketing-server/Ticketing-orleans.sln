@@ -15,7 +15,9 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{9FA18E5C-8153-40C5-9F5C-E1E371645262}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Models", "..\Ticketing.Models\Ticketing.Models.csproj", "{4A335AAF-CC4C-499E-BBD6-55F277ED361A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Models", "..\Ticketing.Models\Ticketing.Models.csproj", "{4A335AAF-CC4C-499E-BBD6-55F277ED361A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "..\Utils\Utils.csproj", "{F4292DC1-46BA-4DF0-B208-3A56D0B8F87F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{4A335AAF-CC4C-499E-BBD6-55F277ED361A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A335AAF-CC4C-499E-BBD6-55F277ED361A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A335AAF-CC4C-499E-BBD6-55F277ED361A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4292DC1-46BA-4DF0-B208-3A56D0B8F87F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4292DC1-46BA-4DF0-B208-3A56D0B8F87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4292DC1-46BA-4DF0-B208-3A56D0B8F87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4292DC1-46BA-4DF0-B208-3A56D0B8F87F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

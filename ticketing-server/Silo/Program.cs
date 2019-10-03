@@ -8,6 +8,7 @@ using Orleans.Configuration;
 using Orleans.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
+using Utils;
 
 namespace Silo
 {
@@ -23,11 +24,13 @@ namespace Silo
             _silo = new SiloHostBuilder()
                 .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = "Ticketing-docker";
-                    options.ServiceId = "TicketingSampleApp";
+                    options.ClusterId = TicketingConstants.ClusterId;
+                    options.ServiceId = TicketingConstants.ServiceId;
                 })
                 .UseAzureStorageClustering(options => options.ConnectionString = connectionString)
                 .AddAzureTableGrainStorage("store1", options => options.ConnectionString = connectionString)
+                .AddAzureTableGrainStorage("PubSubStore", options => options.ConnectionString = connectionString)
+                .AddSimpleMessageStreamProvider(TicketingConstants.LogStreamProvider)
                 .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000, listenOnAnyHostAddress: true)
                 .ConfigureApplicationParts(parts =>
                     parts.AddApplicationPart(typeof(TicketsReserved).Assembly).WithReferences())

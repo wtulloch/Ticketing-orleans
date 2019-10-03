@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Utils\Utils.csproj" />
     <ProjectReference Include="..\Grains.Interfaces\Grains.Interfaces.csproj" />
   </ItemGroup>
 

@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Utils;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace TicketingApi
@@ -83,8 +84,8 @@ namespace TicketingApi
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart((typeof(ITicketsReserved).Assembly)))
                 .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = "Ticketing-docker";
-                    options.ServiceId = "TicketingSampleApp";
+                    options.ClusterId = TicketingConstants.ClusterId;
+                    options.ServiceId = TicketingConstants.ServiceId;
                 })
                 .ConfigureLogging(logger => logger.AddConsole())
                 .UseAzureStorageClustering(options => options.ConnectionString = connectionString)
