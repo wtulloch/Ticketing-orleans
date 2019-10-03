@@ -52,7 +52,7 @@ namespace TicketingApi.Controllers
             {
                 await ticketsReserved.SetTicket(new TicketBooking(showId,ticket.TicketId));
             }
-            catch (Exception e)
+            catch 
             {
                 return BadRequest();
             }
