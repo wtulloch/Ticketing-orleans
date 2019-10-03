@@ -36,7 +36,7 @@ namespace Silo
                 .ConfigureApplicationParts(parts =>
                     parts.AddApplicationPart(typeof(TicketsReserved).Assembly).WithReferences())
                 .ConfigureServices(DependencyInjectionHelper.IocContainerRegistration)
-                .UseDashboard(options => { options.Port = 80020; })
+                .UseDashboard(options => { options.Port = 8020; })
                 .ConfigureLogging(builder => builder.SetMinimumLevel(LogLevel.Warning).AddConsole())
                 .Build();
 
