@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace Silo
         private static readonly ManualResetEvent SiloStopped = new ManualResetEvent(false);
         static void Main(string[] args)
         {
-            
+            var connectionString = ConfigurationManager.ConnectionStrings["persistence"].ConnectionString;
             _silo = new SiloHostBuilder()
                 .Configure<ClusterOptions>(options =>
                 {
@@ -29,9 +30,7 @@ namespace Silo
                 {
                     opt.CanCreateResources = false;
                 })
-                .AddMemoryGrainStorageAsDefault()
-                .AddMemoryGrainStorage("store1")
-                .AddMemoryGrainStorage("PubSubStore")
+                .AddAzureBlobGrainStorage("store1", options => options.ConnectionString = connectionString)
                 .AddSimpleMessageStreamProvider(TicketingConstants.LogStreamProvider)
                 .ConfigureEndpoints(new Random(1).Next(30001, 30100), new Random(1).Next(20001, 20100), listenOnAnyHostAddress: true)
                 .ConfigureApplicationParts(parts =>
