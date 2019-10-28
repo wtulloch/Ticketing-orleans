@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Grains.Interfaces;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
+using Orleans.Clustering.Kubernetes;
 using Orleans.Hosting;
 using Ticketing.Models;
 using Utils;
@@ -19,7 +19,6 @@ namespace Admin.View
             if (client == null)
             {
                 Console.WriteLine("failed to get client");
-                Console.ReadKey();
                 return;
             }
 
@@ -28,13 +27,7 @@ namespace Admin.View
 
            var subHandle = await stream.SubscribeAsync(new StreamObserver());
 
-           Console.ReadKey();
            await subHandle.UnsubscribeAsync();
-
-
-
-
-
         }
 
         private static async Task<IClusterClient> InitialiseClient()
@@ -47,7 +40,6 @@ namespace Admin.View
             {
                 try
                 {
-                    var connectionString = ConfigurationManager.ConnectionStrings["OrleansStorage"].ConnectionString;
                     var client = new ClientBuilder()
                         .Configure<ClusterOptions>(options =>
                         {
@@ -55,7 +47,7 @@ namespace Admin.View
                             options.ServiceId = TicketingConstants.ServiceId;
                         })
                         .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(IMessageBatch).Assembly).WithReferences())
-                        .UseAzureStorageClustering(options => options.ConnectionString = connectionString)
+                        .UseKubeGatewayListProvider()
                         .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Warning).AddConsole())
                         .AddSimpleMessageStreamProvider(TicketingConstants.LogStreamProvider)
                         .Build();

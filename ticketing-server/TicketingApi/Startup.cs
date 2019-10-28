@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Grains.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Orleans;
+using Orleans.Clustering.Kubernetes;
 using Orleans.Configuration;
-using Orleans.Hosting;
 using Utils;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace TicketingApi
 {
@@ -31,9 +28,8 @@ namespace TicketingApi
         public void ConfigureServices(IServiceCollection services)
         {
             var createClusterClient = CreateClusterClient(services.BuildServiceProvider());
+            services.AddSingleton(createClusterClient);
 
-            services.AddSingleton<IClusterClient>(createClusterClient);
-           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fake Ticketing", Version = "V1" });
@@ -46,12 +42,12 @@ namespace TicketingApi
                     builder.AllowAnyMethod();
                 });
             });
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -61,24 +57,20 @@ namespace TicketingApi
             app.UseCors();
             
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fake Ticketing V1");
-                c.RoutePrefix = string.Empty;
-            }); 
+                c.RoutePrefix = String.Empty;
+            });
 
-            app.UseMvc();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
         private IClusterClient CreateClusterClient(IServiceProvider serviceProvider)
         {
             var log = serviceProvider.GetService<ILogger<Startup>>();
-
-            var connectionString = Configuration["LocalStorage"];
-
+            
             var client = new ClientBuilder()
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart((typeof(ITicketsReserved).Assembly)))
                 .Configure<ClusterOptions>(options =>
@@ -87,7 +79,7 @@ namespace TicketingApi
                     options.ServiceId = TicketingConstants.ServiceId;
                 })
                 .ConfigureLogging(logger => logger.SetMinimumLevel(LogLevel.Error).AddConsole())
-                .UseAzureStorageClustering(options => options.ConnectionString = connectionString)
+                .UseKubeGatewayListProvider()
                 .Build();
 
             client.Connect(RetryFilter).GetAwaiter().GetResult();
