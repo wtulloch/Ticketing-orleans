@@ -37,7 +37,7 @@ namespace TicketingApi
 
             services.AddCors(options => { options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:8080", "http://127.0.0.1:8080");
+                    builder.WithOrigins("http://localhost:8080", "http://127.0.0.1:8080", "http://ticketapi.localtest.me");
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                 });
