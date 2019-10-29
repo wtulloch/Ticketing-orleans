@@ -6,10 +6,11 @@ using Orleans;
 using Orleans.Providers;
 using Repositories;
 using Ticketing.Models;
+using Utils;
 
 namespace Grains
 {
-    [StorageProvider(ProviderName = "store1")]
+    [StorageProvider(ProviderName = TicketingConstants.StorageProviderName)]
     public class TheatreShows : Grain<TheatreShowState> , IShowInfo
     {
         private readonly IShowRepository _repository;

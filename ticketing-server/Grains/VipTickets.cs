@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Grains.Interfaces;
 using Orleans;
 using Orleans.Providers;
+using Utils;
 
 namespace Grains
 {
-    [StorageProvider(ProviderName = "store1")]
+    [StorageProvider(ProviderName = TicketingConstants.StorageProviderName)]
     public class VipTickets : Grain<VipTicketState>,  IVipQueue
     {
         public async Task QueueTicket(string ticketId)

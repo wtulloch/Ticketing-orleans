@@ -16,7 +16,7 @@ namespace Grains
     {
         public ConcurrentQueue<ShowTicketLogMessage> Messages { get; set; } = new ConcurrentQueue<ShowTicketLogMessage>();
     }
-    [StorageProvider(ProviderName = "store1")]
+    [StorageProvider(ProviderName = TicketingConstants.StorageProviderName)]
     public class MessageBatch: Grain<MessageBatchState>, IMessageBatch
     {
         private IDisposable _timer;

@@ -6,10 +6,11 @@ using Grains.Interfaces;
 using Orleans;
 using Orleans.Providers;
 using Ticketing.Models;
+using Utils;
 
 namespace Grains
 {
-    [StorageProvider(ProviderName = "store1")]
+    [StorageProvider(ProviderName = TicketingConstants.StorageProviderName)]
     public class TicketsReserved : Grain<TicketsReservedState>, ITicketsReserved
     {
 
