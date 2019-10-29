@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: ticketsilo
+  name: ticketsilo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketsilo
+  template:
+    metadata:
+      labels:
+        app: ticketsilo
+    spec:
+      containers:
+      - image: ticketsilo:dev
+        imagePullPolicy: Never
+        name: ticketsilo
+        ports:
+        - containerPort: 8020
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8020
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        envFrom:
+        - configMapRef:
+            name: orleans-config

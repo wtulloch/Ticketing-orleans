@@ -1,0 +1,7 @@
+resources:
+  - api-deployment.yaml
+  - api-ingress.yaml
+  - api-service.yaml
+  - silo-deployment.yaml
+  - silo-ingress.yaml
+  - silo-service.yaml

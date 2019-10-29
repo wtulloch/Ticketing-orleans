@@ -15,13 +15,18 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 
 # Create namespace for Orleans Cluster
 ```
-kubectl create namespace tickets
+kubectl create namespace tickets-dev
+```
+
+# Install Azurite for storage emulation (Dev Only)
+```
+kubectl apply -f azurite.yaml
 ```
 
 # Install the Cluster
 
 ```
-kubectl apply -f orleans.yaml
+kubectl apply -k orleans/dev
 ```
 
 # Access the dashboard and api pages

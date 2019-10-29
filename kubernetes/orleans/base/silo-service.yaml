@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketsilo-dashboard
+  labels:
+    app: ticketsilo-dashboard
+spec:
+  selector:
+    app: ticketsilo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8020

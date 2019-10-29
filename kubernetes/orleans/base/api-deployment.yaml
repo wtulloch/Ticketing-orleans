@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: ticketapi
+  name: ticketapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketapi
+  template:
+    metadata:
+      labels:
+        app: ticketapi
+    spec:
+      containers:
+      - image: ticketapi:dev
+        imagePullPolicy: Never
+        name: ticketapi
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        envFrom:
+        - configMapRef:
+            name: orleans-config
