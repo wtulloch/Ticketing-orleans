@@ -18,3 +18,5 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 **/.toolstarget
+**/dist/
+**/node_modules/

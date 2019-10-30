@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: ticketweb
+  name: ticketweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketweb
+  template:
+    metadata:
+      labels:
+        app: ticketweb
+    spec:
+      containers:
+      - image: ticketweb:dev
+        imagePullPolicy: Never
+        name: ticketweb
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80

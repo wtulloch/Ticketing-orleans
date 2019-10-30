@@ -5,3 +5,6 @@ resources:
   - silo-deployment.yaml
   - silo-ingress.yaml
   - silo-service.yaml
+  - web-deployment.yaml
+  - web-ingress.yaml
+  - web-service.yaml
