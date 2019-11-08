@@ -10,6 +10,9 @@ using Utils;
 
 namespace Grains
 {
+    /// <summary>
+    /// Manages the tickets for a given show and date
+    /// </summary>
     [StorageProvider(ProviderName = TicketingConstants.StorageProviderName)]
     public class TicketsReserved : Grain<TicketsReservedState>, ITicketsReserved
     {

@@ -10,6 +10,10 @@ using Utils;
 
 namespace Grains
 {
+    /// <summary>
+    /// Implementation of the IShowInfo interface.
+    /// Provides information regarding the current shows available
+    /// </summary>
     [StorageProvider(ProviderName = TicketingConstants.StorageProviderName)]
     public class TheatreShows : Grain<TheatreShowState> , IShowInfo
     {
@@ -39,11 +43,22 @@ namespace Grains
             await base.OnActivateAsync();
         }
 
+        /// <summary>
+        /// returns a list of all the current shows in the system
+        /// </summary>
+        /// <returns></returns>
         public Task<List<Ticketing.Models.ShowInformation>> GetShows()
         {
             return Task.FromResult(State.ShowInformation.ToList());
         }
 
+        /// <summary>
+        /// Gets the information regarding a specific show for a specific date
+        /// including all the tickets and whether they have been booked or not.
+        /// </summary>
+        /// <param name="showId">The unique id for the show</param>
+        /// <param name="date">the date of the show</param>
+        /// <returns></returns>
         public async Task<ShowData> GetShow(string showId, string date)
         {
             var showInfo =

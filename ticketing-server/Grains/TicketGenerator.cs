@@ -6,6 +6,9 @@ using Orleans.Concurrency;
 
 namespace Grains
 {
+    /// <summary>
+    /// This grain is just for generating a set of fake ticket ids for a given show
+    /// </summary>
     [StatelessWorker]
     public class TicketGenerator : Grain, ITicketGenerator
     {
